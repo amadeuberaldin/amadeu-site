@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 
-app = FastAPI()
+app = FastAPI(title="Portfolio Homepage API")
+
 
 @app.get("/health")
 def health():
-    return {"ok": True, "site": "amadeu-site"}
+    return JSONResponse({"status": "ok"})

@@ -1,12 +1,197 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Amadeu Beraldin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucas Andrade — Desenvolvedor de Software</title>
+  <meta name="description" content="Homepage profissional em tema escuro com foco em software, produtos digitais e experiências web modernas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body style="font-family: sans-serif;">
-  <h1>Amadeu Beraldin</h1>
-  <p>Site em construção.</p>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a href="#inicio" class="brand" aria-label="Ir para o início">
+          <span class="brand-mark">LA</span>
+          <span class="brand-text">Lucas Andrade</span>
+        </a>
+
+        <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menu">
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav id="site-nav" class="nav" aria-label="Navegação principal">
+          <a href="#projetos">Projetos</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#contato">Contato</a>
+          <a href="#contato" class="btn btn-sm btn-ghost">Falar comigo</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="inicio" class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Desenvolvedor full stack · Produtos digitais</p>
+            <h1>Interfaces elegantes, software sólido e experiências que passam confiança.</h1>
+            <p class="hero-text">
+              Crio soluções web com foco em clareza, performance e usabilidade. Do conceito ao produto,
+              transformo ideias em experiências modernas, limpas e prontas para crescer.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#projetos" class="btn btn-primary">Ver projetos</a>
+              <a href="#sobre" class="btn btn-secondary">Sobre mim</a>
+            </div>
+
+            <ul class="hero-highlights" aria-label="Destaques profissionais">
+              <li><strong>5+ anos</strong><span>em desenvolvimento web</span></li>
+              <li><strong>Front-end</strong><span>com foco em UX e design systems</span></li>
+              <li><strong>Back-end</strong><span>APIs escaláveis e integrações</span></li>
+            </ul>
+          </div>
+
+          <aside class="hero-panel" aria-label="Resumo profissional">
+            <div class="panel-glow"></div>
+            <div class="status-pill">
+              <span class="status-dot"></span>
+              Disponível para novos projetos
+            </div>
+
+            <div class="hero-card">
+              <p class="card-label">Especialidade</p>
+              <h2>Software com estética premium e execução consistente.</h2>
+              <p>
+                Experiência em aplicações corporativas, landing pages de tecnologia, dashboards e
+                produtos digitais com visual refinado e arquitetura bem organizada.
+              </p>
+            </div>
+
+            <div class="metrics">
+              <div class="metric-card">
+                <span class="metric-value">18</span>
+                <span class="metric-label">projetos entregues</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-value">99%</span>
+                <span class="metric-label">foco em performance</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="projetos" class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Projetos em destaque</p>
+              <h2>Trabalhos com visual limpo, estrutura robusta e foco em resultado.</h2>
+            </div>
+            <p class="section-text">
+              Seleção de interfaces e plataformas pensadas para transmitir profissionalismo,
+              agilidade e confiança desde o primeiro acesso.
+            </p>
+          </div>
+
+          <div class="projects-grid">
+            <article class="project-card featured">
+              <div class="project-content">
+                <span class="project-tag">SaaS</span>
+                <h3>Painel analítico para operação comercial</h3>
+                <p>
+                  Dashboard com visual escuro, navegação clara e indicadores em tempo real para equipes de vendas e gestão.
+                </p>
+                <ul class="project-meta">
+                  <li>Design system</li>
+                  <li>Componentes reutilizáveis</li>
+                  <li>Performance otimizada</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-content">
+                <span class="project-tag">Web App</span>
+                <h3>Plataforma de gestão interna</h3>
+                <p>
+                  Interface administrativa com fluxos simplificados, hierarquia visual consistente e ótima leitura em telas extensas.
+                </p>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-content">
+                <span class="project-tag">Landing Page</span>
+                <h3>Site institucional para software B2B</h3>
+                <p>
+                  Homepage moderna e responsiva, com hero impactante, comunicação objetiva e conversão orientada a produto.
+                </p>
+              </div>
+            </article>
+
+            <article class="project-card">
+              <div class="project-content">
+                <span class="project-tag">API + Front-end</span>
+                <h3>Portal integrado com automações</h3>
+                <p>
+                  Solução completa com integração de serviços, autenticação, área logada e arquitetura preparada para evolução.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="sobre" class="section section-alt">
+        <div class="container about-grid">
+          <div>
+            <p class="eyebrow">Sobre</p>
+            <h2>Construo produtos digitais com equilíbrio entre design, negócio e tecnologia.</h2>
+          </div>
+          <div>
+            <p class="section-text">
+              Meu trabalho combina atenção aos detalhes visuais com uma base técnica sólida. Priorizo interfaces intuitivas,
+              código organizado e experiências que valorizam a marca e facilitam a vida do usuário.
+            </p>
+            <p class="section-text muted">
+              Atuo em projetos de software, sites institucionais, aplicações web e melhorias de experiência digital para empresas que buscam uma presença mais sofisticada e eficiente.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contato" class="section">
+        <div class="container">
+          <div class="cta-box">
+            <div>
+              <p class="eyebrow">Contato</p>
+              <h2>Vamos criar uma presença digital mais forte e profissional.</h2>
+              <p class="section-text">
+                Se você procura um site ou produto com visual moderno, performance e acabamento de alto nível, vamos conversar.
+              </p>
+            </div>
+            <div class="cta-actions">
+              <a class="btn btn-primary" href="mailto:contato@lucasandrade.dev">contato@lucasandrade.dev</a>
+              <a class="btn btn-secondary" href="tel:+550000000000">Agendar conversa</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p>© 2026 Lucas Andrade. Todos os direitos reservados.</p>
+        <a href="#inicio">Voltar ao topo</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
