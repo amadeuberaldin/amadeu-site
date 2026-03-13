@@ -1,196 +1,364 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lucas Andrade — Desenvolvedor de Software</title>
-  <meta name="description" content="Homepage profissional em tema escuro com foco em software, produtos digitais e experiências web modernas." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>Amadeu Beraldin | Portfolio Técnico</title>
+  <meta name="description" content="Homepage premium do portfolio técnico de Amadeu Beraldin com foco em AI agents, homelab, minecraft e automação." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            base: '#0B0F19',
+            panel: '#111827',
+            soft: '#1F2937',
+            accent: '#7C3AED',
+            cyan: '#38BDF8',
+            green: '#22C55E'
+          },
+          boxShadow: {
+            glow: '0 0 0 1px rgba(255,255,255,0.06), 0 18px 50px rgba(124,58,237,0.18)',
+            soft: '0 20px 50px rgba(0,0,0,0.34)',
+            card: '0 0 0 1px rgba(255,255,255,0.06), 0 14px 34px rgba(0,0,0,0.28)'
+          },
+          backgroundImage: {
+            hero: 'radial-gradient(circle at top left, rgba(124,58,237,0.22), transparent 32%), radial-gradient(circle at top right, rgba(56,189,248,0.16), transparent 28%), linear-gradient(180deg, #0B0F19 0%, #0B0F19 100%)'
+          }
+        }
+      }
+    }
+  </script>
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <div class="site-shell">
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <a href="#inicio" class="brand" aria-label="Ir para o início">
-          <span class="brand-mark">LA</span>
-          <span class="brand-text">Lucas Andrade</span>
-        </a>
+<body class="bg-base text-slate-100 antialiased selection:bg-accent/30 selection:text-white">
+  <div class="fixed inset-0 -z-10 bg-hero"></div>
+  <div class="fixed inset-0 -z-10 opacity-40" aria-hidden="true">
+    <div class="absolute left-1/2 top-0 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-accent/10 blur-3xl"></div>
+    <div class="absolute right-0 top-40 h-72 w-72 rounded-full bg-cyan/10 blur-3xl"></div>
+    <div class="absolute left-0 top-[30rem] h-80 w-80 rounded-full bg-green/5 blur-3xl"></div>
+  </div>
 
-        <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menu">
-          <span></span>
-          <span></span>
-        </button>
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-base/70 backdrop-blur-2xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+      <a href="#home" class="text-sm font-semibold uppercase tracking-[0.24em] text-white/90 transition hover:text-white">Amadeu Beraldin</a>
+      <nav class="hidden items-center gap-8 md:flex">
+        <a href="#focos" class="text-sm text-slate-300 transition hover:text-white">Focos</a>
+        <a href="#projetos" class="text-sm text-slate-300 transition hover:text-white">Projetos</a>
+        <a href="#construcao" class="text-sm text-slate-300 transition hover:text-white">Como eu construo</a>
+        <a href="#stack" class="text-sm text-slate-300 transition hover:text-white">Stack</a>
+        <a href="#contato" class="text-sm text-slate-300 transition hover:text-white">Contato</a>
+      </nav>
+      <a href="#contato" class="hidden rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/10 md:inline-flex">Falar comigo</a>
+      <button id="menuButton" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:bg-white/10 md:hidden" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+    <div id="mobileMenu" class="hidden border-t border-white/10 bg-panel/95 md:hidden">
+      <nav class="mx-auto flex max-w-7xl flex-col px-6 py-4">
+        <a href="#focos" class="py-2 text-sm text-slate-300 transition hover:text-white">Focos</a>
+        <a href="#projetos" class="py-2 text-sm text-slate-300 transition hover:text-white">Projetos</a>
+        <a href="#construcao" class="py-2 text-sm text-slate-300 transition hover:text-white">Como eu construo</a>
+        <a href="#stack" class="py-2 text-sm text-slate-300 transition hover:text-white">Stack</a>
+        <a href="#contato" class="py-2 text-sm text-slate-300 transition hover:text-white">Contato</a>
+      </nav>
+    </div>
+  </header>
 
-        <nav id="site-nav" class="nav" aria-label="Navegação principal">
-          <a href="#projetos">Projetos</a>
-          <a href="#sobre">Sobre</a>
-          <a href="#contato">Contato</a>
-          <a href="#contato" class="btn btn-sm btn-ghost">Falar comigo</a>
-        </nav>
-      </div>
-    </header>
-
-    <main>
-      <section id="inicio" class="hero">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow">Desenvolvedor full stack · Produtos digitais</p>
-            <h1>Interfaces elegantes, software sólido e experiências que passam confiança.</h1>
-            <p class="hero-text">
-              Crio soluções web com foco em clareza, performance e usabilidade. Do conceito ao produto,
-              transformo ideias em experiências modernas, limpas e prontas para crescer.
-            </p>
-
-            <div class="hero-actions">
-              <a href="#projetos" class="btn btn-primary">Ver projetos</a>
-              <a href="#sobre" class="btn btn-secondary">Sobre mim</a>
-            </div>
-
-            <ul class="hero-highlights" aria-label="Destaques profissionais">
-              <li><strong>5+ anos</strong><span>em desenvolvimento web</span></li>
-              <li><strong>Front-end</strong><span>com foco em UX e design systems</span></li>
-              <li><strong>Back-end</strong><span>APIs escaláveis e integrações</span></li>
-            </ul>
-          </div>
-
-          <aside class="hero-panel" aria-label="Resumo profissional">
-            <div class="panel-glow"></div>
-            <div class="status-pill">
-              <span class="status-dot"></span>
-              Disponível para novos projetos
-            </div>
-
-            <div class="hero-card">
-              <p class="card-label">Especialidade</p>
-              <h2>Software com estética premium e execução consistente.</h2>
-              <p>
-                Experiência em aplicações corporativas, landing pages de tecnologia, dashboards e
-                produtos digitais com visual refinado e arquitetura bem organizada.
-              </p>
-            </div>
-
-            <div class="metrics">
-              <div class="metric-card">
-                <span class="metric-value">18</span>
-                <span class="metric-label">projetos entregues</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-value">99%</span>
-                <span class="metric-label">foco em performance</span>
-              </div>
-            </div>
-          </aside>
+  <main id="home">
+    <section class="mx-auto grid max-w-7xl gap-14 px-6 pb-20 pt-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:px-8 lg:pb-32 lg:pt-24">
+      <div>
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.22em] text-slate-300 shadow-card">
+          <span class="h-2 w-2 rounded-full bg-green"></span>
+          Portfolio técnico pessoal
         </div>
-      </section>
+        <h1 class="max-w-4xl text-5xl font-black leading-[0.92] tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-[5.25rem]">
+          AI agents, homelab, minecraft e automação com foco em sistemas práticos.
+        </h1>
+        <p class="mt-7 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl sm:leading-9">
+          Sou <span class="font-semibold text-white">Amadeu Beraldin</span>. Este espaço reúne interesses, estudos e experimentos técnicos em infraestrutura pessoal, agentes de IA, automações e ecossistemas que conectam software, operação e criatividade.
+        </p>
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row">
+          <a href="#projetos" class="inline-flex items-center justify-center rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white shadow-glow transition duration-300 hover:-translate-y-0.5 hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-accent/60 focus:ring-offset-2 focus:ring-offset-base">Explorar portfolio</a>
+          <a href="#construcao" class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-base">Como eu construo</a>
+        </div>
+        <div class="mt-12 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-2xl border border-white/10 bg-white/[0.045] p-5 shadow-card backdrop-blur-sm">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Foco</p>
+            <p class="mt-2 text-sm font-medium text-white">Sistemas úteis e iterativos</p>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/[0.045] p-5 shadow-card backdrop-blur-sm">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Abordagem</p>
+            <p class="mt-2 text-sm font-medium text-white">Infra + software + automação</p>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/[0.045] p-5 shadow-card backdrop-blur-sm">
+            <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Contexto</p>
+            <p class="mt-2 text-sm font-medium text-white">Projetos pessoais e laboratório</p>
+          </div>
+        </div>
+      </div>
 
-      <section id="projetos" class="section">
-        <div class="container">
-          <div class="section-head">
+      <div class="relative">
+        <div class="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-accent/20 via-transparent to-cyan/20 blur-2xl"></div>
+        <div class="card-noise relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/10 to-white/[0.03] p-5 shadow-soft backdrop-blur-xl sm:p-6">
+          <div class="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
             <div>
-              <p class="eyebrow">Projetos em destaque</p>
-              <h2>Trabalhos com visual limpo, estrutura robusta e foco em resultado.</h2>
+              <p class="text-[11px] uppercase tracking-[0.22em] text-slate-400">Painel técnico</p>
+              <h2 class="mt-1 text-lg font-semibold text-white">Visão de laboratório</h2>
             </div>
-            <p class="section-text">
-              Seleção de interfaces e plataformas pensadas para transmitir profissionalismo,
-              agilidade e confiança desde o primeiro acesso.
-            </p>
+            <div class="flex gap-2">
+              <span class="h-3 w-3 rounded-full bg-rose-400/80"></span>
+              <span class="h-3 w-3 rounded-full bg-amber-400/80"></span>
+              <span class="h-3 w-3 rounded-full bg-green/80"></span>
+            </div>
           </div>
 
-          <div class="projects-grid">
-            <article class="project-card featured">
-              <div class="project-content">
-                <span class="project-tag">SaaS</span>
-                <h3>Painel analítico para operação comercial</h3>
-                <p>
-                  Dashboard com visual escuro, navegação clara e indicadores em tempo real para equipes de vendas e gestão.
-                </p>
-                <ul class="project-meta">
-                  <li>Design system</li>
-                  <li>Componentes reutilizáveis</li>
-                  <li>Performance otimizada</li>
+          <div class="space-y-4">
+            <div class="rounded-2xl border border-white/10 bg-base/60 p-4 shadow-card">
+              <div class="mb-3 flex items-center justify-between">
+                <span class="text-[11px] font-medium uppercase tracking-[0.18em] text-cyan">Fluxo</span>
+                <span class="text-xs text-slate-400">ativo</span>
+              </div>
+              <div class="grid grid-cols-3 gap-3 text-xs text-slate-300">
+                <div class="rounded-xl border border-white/10 bg-white/5 p-3 text-center">Entrada</div>
+                <div class="rounded-xl border border-accent/30 bg-accent/10 p-3 text-center text-white">Agentes</div>
+                <div class="rounded-xl border border-white/10 bg-white/5 p-3 text-center">Ações</div>
+              </div>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/10 bg-base/60 p-4 shadow-card">
+                <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Infraestrutura</p>
+                <ul class="mt-3 space-y-2.5 text-sm text-slate-200">
+                  <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-cyan"></span>Self-hosting e serviços pessoais</li>
+                  <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-cyan"></span>Ambientes reprodutíveis</li>
+                  <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-cyan"></span>Integrações sob medida</li>
                 </ul>
               </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-content">
-                <span class="project-tag">Web App</span>
-                <h3>Plataforma de gestão interna</h3>
-                <p>
-                  Interface administrativa com fluxos simplificados, hierarquia visual consistente e ótima leitura em telas extensas.
-                </p>
+              <div class="rounded-2xl border border-white/10 bg-base/60 p-4 shadow-card">
+                <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Contextos</p>
+                <ul class="mt-3 space-y-2.5 text-sm text-slate-200">
+                  <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green"></span>Automações do dia a dia</li>
+                  <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green"></span>Laboratório de AI agents</li>
+                  <li class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green"></span>Servidores e experiências minecraft</li>
+                </ul>
               </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-content">
-                <span class="project-tag">Landing Page</span>
-                <h3>Site institucional para software B2B</h3>
-                <p>
-                  Homepage moderna e responsiva, com hero impactante, comunicação objetiva e conversão orientada a produto.
-                </p>
-              </div>
-            </article>
-
-            <article class="project-card">
-              <div class="project-content">
-                <span class="project-tag">API + Front-end</span>
-                <h3>Portal integrado com automações</h3>
-                <p>
-                  Solução completa com integração de serviços, autenticação, área logada e arquitetura preparada para evolução.
-                </p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="sobre" class="section section-alt">
-        <div class="container about-grid">
-          <div>
-            <p class="eyebrow">Sobre</p>
-            <h2>Construo produtos digitais com equilíbrio entre design, negócio e tecnologia.</h2>
-          </div>
-          <div>
-            <p class="section-text">
-              Meu trabalho combina atenção aos detalhes visuais com uma base técnica sólida. Priorizo interfaces intuitivas,
-              código organizado e experiências que valorizam a marca e facilitam a vida do usuário.
-            </p>
-            <p class="section-text muted">
-              Atuo em projetos de software, sites institucionais, aplicações web e melhorias de experiência digital para empresas que buscam uma presença mais sofisticada e eficiente.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="contato" class="section">
-        <div class="container">
-          <div class="cta-box">
-            <div>
-              <p class="eyebrow">Contato</p>
-              <h2>Vamos criar uma presença digital mais forte e profissional.</h2>
-              <p class="section-text">
-                Se você procura um site ou produto com visual moderno, performance e acabamento de alto nível, vamos conversar.
-              </p>
             </div>
-            <div class="cta-actions">
-              <a class="btn btn-primary" href="mailto:contato@lucasandrade.dev">contato@lucasandrade.dev</a>
-              <a class="btn btn-secondary" href="tel:+550000000000">Agendar conversa</a>
+
+            <div class="rounded-2xl border border-white/10 bg-gradient-to-r from-accent/15 via-white/[0.04] to-cyan/15 p-4 shadow-card">
+              <p class="text-sm font-medium text-white">Objetivo do portfolio</p>
+              <p class="mt-2 text-sm leading-7 text-slate-300">Apresentar uma base elegante para documentar projetos reais, estudos em andamento e experiências técnicas sem promessas infladas ou dados inventados.</p>
             </div>
           </div>
         </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <p>© 2026 Lucas Andrade. Todos os direitos reservados.</p>
-        <a href="#inicio">Voltar ao topo</a>
       </div>
-    </footer>
-  </div>
+    </section>
+
+    <section id="focos" class="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-cyan">Áreas de foco</p>
+        <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Quatro eixos centrais do portfolio técnico.</h2>
+        <p class="mt-4 text-lg leading-8 text-slate-300">Temas que orientam experimentos, infraestrutura pessoal e soluções construídas com pragmatismo.</p>
+      </div>
+
+      <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <article class="group rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-card transition duration-300 hover:-translate-y-1.5 hover:border-accent/40 hover:bg-white/[0.06] hover:shadow-glow">
+          <div class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent/15 text-accent ring-1 ring-inset ring-accent/20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 3v2.25M14.25 3v2.25M9 14.25h6M6.75 19.5h10.5A2.25 2.25 0 0019.5 17.25V6.75A2.25 2.25 0 0017.25 4.5H6.75A2.25 2.25 0 004.5 6.75v10.5A2.25 2.25 0 006.75 19.5z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">AI agents</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-300">Exploração de agentes, fluxos assistidos por IA, orquestração de tarefas e interfaces que transformam contexto em ação prática.</p>
+        </article>
+
+        <article class="group rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-card transition duration-300 hover:-translate-y-1.5 hover:border-cyan/40 hover:bg-white/[0.06] hover:shadow-glow">
+          <div class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan/15 text-cyan ring-1 ring-inset ring-cyan/20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 16.5V7.5M12 19.5V4.5M3 16.5V7.5M7.5 12h9" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Homelab</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-300">Ambientes pessoais para testes, self-hosting, observabilidade, serviços internos e aprendizado contínuo em infraestrutura.</p>
+        </article>
+
+        <article class="group rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-card transition duration-300 hover:-translate-y-1.5 hover:border-green/40 hover:bg-white/[0.06] hover:shadow-glow">
+          <div class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-green/15 text-green ring-1 ring-inset ring-green/20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3.75h6A2.25 2.25 0 0117.25 6v12A2.25 2.25 0 0115 20.25H9A2.25 2.25 0 016.75 18V6A2.25 2.25 0 019 3.75z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 9.75h.008v.008H9V9.75zm3 0h.008v.008H12V9.75zm3 0h.008v.008H15V9.75zM9 12.75h.008v.008H9v-.008zm3 0h.008v.008H12v-.008zm3 0h.008v.008H15v-.008z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Minecraft</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-300">Interesse em servidores, experiências customizadas, automações de suporte e ecossistemas técnicos aplicados ao universo minecraft.</p>
+        </article>
+
+        <article class="group rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-card transition duration-300 hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/[0.06] hover:shadow-glow">
+          <div class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-white ring-1 ring-inset ring-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.5 6h9m-9 6h9m-9 6h9M4.5 6h.008v.008H4.5V6zm0 6h.008v.008H4.5V12zm0 6h.008v.008H4.5V18z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Automação</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-300">Integrações, rotinas repetíveis, pipelines e ferramentas para reduzir atrito operacional e conectar sistemas de forma eficiente.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="projetos" class="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-cyan">Projetos e experimentos</p>
+          <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Estrutura pronta para destacar trabalhos reais.</h2>
+          <p class="mt-4 text-lg leading-8 text-slate-300">Como não há detalhes específicos fornecidos, os cards abaixo usam descrições neutras e honestas para representar tipos de iniciativas que podem ser documentadas aqui.</p>
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-6 lg:grid-cols-3">
+        <article class="card-noise relative overflow-hidden rounded-3xl border border-white/10 bg-panel/70 p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-accent/30">
+          <div class="flex items-center justify-between gap-4">
+            <span class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-accent">Em evolução</span>
+            <span class="text-xs text-slate-400">AI / Automação</span>
+          </div>
+          <h3 class="mt-5 text-2xl font-semibold leading-tight text-white">Fluxos com agentes e ações encadeadas</h3>
+          <p class="mt-4 text-sm leading-7 text-slate-300">Espaço para documentar projetos envolvendo agentes de IA, ferramentas externas, regras de decisão e automações guiadas por contexto.</p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">LLM</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Orquestração</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Integrações</span>
+          </div>
+        </article>
+
+        <article class="card-noise relative overflow-hidden rounded-3xl border border-white/10 bg-panel/70 p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-cyan/30">
+          <div class="flex items-center justify-between gap-4">
+            <span class="rounded-full border border-cyan/30 bg-cyan/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-cyan">Laboratório</span>
+            <span class="text-xs text-slate-400">Infra / Self-hosting</span>
+          </div>
+          <h3 class="mt-5 text-2xl font-semibold leading-tight text-white">Serviços pessoais em homelab</h3>
+          <p class="mt-4 text-sm leading-7 text-slate-300">Área ideal para apresentar stacks de laboratório, serviços internos, padronização de ambiente, monitoramento e testes controlados.</p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Containers</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Rede</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Observabilidade</span>
+          </div>
+        </article>
+
+        <article class="card-noise relative overflow-hidden rounded-3xl border border-white/10 bg-panel/70 p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-green/30">
+          <div class="flex items-center justify-between gap-4">
+            <span class="rounded-full border border-green/30 bg-green/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-green">Exploração</span>
+            <span class="text-xs text-slate-400">Minecraft / Operação</span>
+          </div>
+          <h3 class="mt-5 text-2xl font-semibold leading-tight text-white">Ecossistemas e suporte para minecraft</h3>
+          <p class="mt-4 text-sm leading-7 text-slate-300">Bloco pensado para reunir iniciativas ligadas a servidores, utilitários, automações administrativas e experiências técnicas relacionadas a minecraft.</p>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Servidor</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Scripts</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">Operação</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="construcao" class="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
+      <div class="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-cyan">Como eu construo</p>
+          <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Arquitetura prática, integração e melhoria contínua.</h2>
+          <p class="mt-4 text-lg leading-8 text-slate-300">A proposta aqui é unir software, infraestrutura e automação em sistemas úteis. Sem exageros: foco em clareza, iteratividade, operação sustentável e documentação de aprendizados.</p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-card">
+            <h3 class="text-lg font-semibold text-white">Infraestrutura</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-300">Ambientes pessoais bem organizados para testar serviços, validar ideias e manter autonomia técnica com base em self-hosting e controle operacional.</p>
+          </div>
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-card">
+            <h3 class="text-lg font-semibold text-white">Integrações</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-300">Conexão entre APIs, ferramentas, painéis, bots e processos para reduzir trabalho manual e criar fluxos mais consistentes.</p>
+          </div>
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-card">
+            <h3 class="text-lg font-semibold text-white">Automações</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-300">Criação de rotinas reutilizáveis para tarefas recorrentes, provisionamento, monitoramento, notificações e operações assistidas.</p>
+          </div>
+          <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-card">
+            <h3 class="text-lg font-semibold text-white">Sistemas práticos</h3>
+            <p class="mt-3 text-sm leading-7 text-slate-300">Construção orientada à utilidade real: menos discurso, mais organização técnica, boas interfaces e espaço para evolução contínua.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack" class="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.22em] text-cyan">Stack e ferramentas</p>
+        <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Base visual para tecnologias e ecossistemas utilizados.</h2>
+        <p class="mt-4 text-lg leading-8 text-slate-300">Lista apresentada de forma neutra para refletir áreas comuns desse tipo de portfolio. Pode ser ajustada depois para refletir exatamente o stack usado por Amadeu Beraldin.</p>
+      </div>
+
+      <div class="mt-10 flex flex-wrap gap-3">
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Python</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">APIs</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Docker</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Linux</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Git</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Automação</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Self-hosting</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">LLMs</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Observabilidade</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Integrações</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Servidores</span>
+        <span class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 shadow-card">Minecraft tooling</span>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
+      <div class="rounded-[2rem] border border-white/10 bg-gradient-to-br from-accent/15 via-white/[0.04] to-cyan/15 p-8 shadow-soft lg:p-10">
+        <div class="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-center">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-cyan">Laboratório em andamento</p>
+            <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Estudos, testes e sistemas que ainda estão tomando forma.</h2>
+            <p class="mt-4 max-w-2xl text-lg leading-8 text-slate-300">Nem todo trabalho precisa nascer como case fechado. Esta homepage foi pensada para acomodar experimentos, rascunhos funcionais, documentação incremental e aprendizados aplicados.</p>
+          </div>
+          <div class="grid gap-4">
+            <div class="rounded-2xl border border-white/10 bg-base/50 p-4 text-sm text-slate-300 shadow-card">Documentar hipóteses, arquitetura e decisões técnicas.</div>
+            <div class="rounded-2xl border border-white/10 bg-base/50 p-4 text-sm text-slate-300 shadow-card">Registrar automações úteis e integrações entre serviços.</div>
+            <div class="rounded-2xl border border-white/10 bg-base/50 p-4 text-sm text-slate-300 shadow-card">Evoluir iniciativas em AI agents, homelab e minecraft com transparência.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="mx-auto max-w-7xl px-6 pb-24 pt-10 lg:px-8">
+      <div class="rounded-[2rem] border border-white/10 bg-panel/70 p-8 shadow-soft backdrop-blur-xl lg:p-10">
+        <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-3xl">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-cyan">Contato</p>
+            <h2 class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Vamos conectar ideias, projetos e experimentos técnicos.</h2>
+            <p class="mt-4 text-lg leading-8 text-slate-300">Se a intenção for trocar sobre AI agents, homelab, minecraft, automação ou simplesmente explorar soluções técnicas com abordagem prática, este espaço pode evoluir para reunir os canais de contato de Amadeu Beraldin.</p>
+          </div>
+          <div class="flex flex-col gap-4 sm:flex-row lg:flex-col lg:items-end">
+            <a href="mailto:contato@exemplo.com" class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-slate-900 shadow-card transition duration-300 hover:-translate-y-0.5 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-base">Entrar em contato</a>
+            <a href="#home" class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20 focus:ring-offset-2 focus:ring-offset-base">Voltar ao topo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10 bg-base/80">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 text-sm text-slate-400 md:flex-row md:items-center md:justify-between lg:px-8">
+      <p>© <span id="year"></span> Amadeu Beraldin. Portfolio técnico pessoal.</p>
+      <div class="flex flex-wrap gap-5">
+        <a href="#focos" class="transition hover:text-white">Focos</a>
+        <a href="#projetos" class="transition hover:text-white">Projetos</a>
+        <a href="#stack" class="transition hover:text-white">Stack</a>
+        <a href="#contato" class="transition hover:text-white">Contato</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
