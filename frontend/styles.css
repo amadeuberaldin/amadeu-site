@@ -1,21 +1,18 @@
+html {
+  color-scheme: dark;
+}
+
 body {
-  background-color: #0b0f19;
+  background-color: #09090b;
+  background-image:
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.08), transparent 30%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
 }
 
-.card-noise::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom right, rgba(255, 255, 255, 0.035), transparent 42%),
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.035), transparent 30%);
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    transition: none !important;
-    animation: none !important;
-  }
+::selection {
+  background: rgba(34, 211, 238, 0.18);
 }

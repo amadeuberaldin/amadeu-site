@@ -1,17 +1,9 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
-app = FastAPI(title="Amadeu Beraldin Portfolio API")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app = FastAPI(title="Amadeu Beraldin Portfolio")
 
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return JSONResponse({"status": "ok"})
