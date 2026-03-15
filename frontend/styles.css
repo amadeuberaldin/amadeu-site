@@ -1,36 +1,18 @@
-:root {
+html {
   color-scheme: dark;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
-  text-rendering: optimizeLegibility;
-  background:
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015), transparent 18%),
-    #0B0F19;
+  background-color: #09090b;
+  background-image:
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.08), transparent 30%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
 }
 
-.page-shell {
-  position: relative;
-  isolation: isolate;
-}
-
-::selection {
-  background: rgba(96, 165, 250, 0.28);
-}
-
-a,
-button {
+a {
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
+::selection {
+  background: rgba(34, 211, 238, 0.18);
 }
