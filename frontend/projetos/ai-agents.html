@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Agent Infrastructure — Amadeu Beraldin</title>
+  <meta name="description" content="Arquitetura sanitizada de um sistema self-hosted com múltiplos agentes para geração, refinamento, validação, preview e versionamento de mudanças em websites." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0B0F19',
+            panel: '#111827',
+            panelSoft: '#0f172a',
+            line: 'rgba(148, 163, 184, 0.18)',
+            muted: '#94a3b8',
+            text: '#e5eefb',
+            blue: '#60A5FA',
+            green: '#22C55E',
+            purple: '#A78BFA',
+            cyan: '#22d3ee',
+            amber: '#F59E0B'
+          },
+          boxShadow: {
+            soft: '0 14px 40px rgba(0,0,0,0.28)',
+            glow: '0 0 0 1px rgba(96,165,250,0.18), 0 18px 40px rgba(0,0,0,0.30)',
+            panel: '0 20px 60px rgba(2,6,23,0.45)'
+          },
+          fontSize: {
+            hero: ['clamp(2.6rem, 6vw, 4.8rem)', { lineHeight: '0.95', letterSpacing: '-0.045em' }]
+          },
+          maxWidth: {
+            measure: '72ch'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="bg-bg text-text antialiased selection:bg-blue/30 selection:text-white">
+  <div class="page-shell min-h-screen">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/35 to-transparent"></div>
+      <div class="absolute left-1/2 top-12 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl"></div>
+      <div class="absolute right-[8%] top-[18%] h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl"></div>
+      <div class="absolute left-[6%] bottom-[10%] h-72 w-72 rounded-full bg-purple-500/10 blur-3xl"></div>
+      <div class="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]"></div>
+    </div>
+
+    <header class="sticky top-0 z-40 border-b border-white/6 bg-bg/78 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/72">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <a href="/" class="text-sm font-semibold tracking-[0.24em] text-white/90 uppercase transition hover:text-white">
+          Amadeu Beraldin
+        </a>
+
+        <nav class="flex items-center gap-2 text-sm text-slate-300">
+          <a href="/" class="rounded-full px-4 py-2.5 transition duration-200 hover:bg-white/5 hover:text-white">Início</a>
+          <a href="/projetos.html" class="rounded-full px-4 py-2.5 transition duration-200 hover:bg-white/5 hover:text-white">Projetos</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="mx-auto max-w-7xl px-6 pb-14 pt-14 lg:px-8 lg:pb-20 lg:pt-20">
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-end">
+          <div>
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-100">
+              agentes · automação self-hosted
+            </div>
+
+            <h1 class="max-w-4xl text-hero font-semibold text-white">
+              AI Agent Infrastructure
+            </h1>
+
+            <p class="mt-6 max-w-measure text-lg leading-8 text-slate-300">
+              Arquitetura sanitizada de um sistema self-hosted com múltiplos estágios para gerar, refinar, validar, publicar previews e versionar mudanças em websites de forma revisável.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#visao-geral" class="inline-flex items-center justify-center rounded-full border border-blue-400/25 bg-blue-400/12 px-5 py-3 text-sm font-medium text-blue-50 shadow-glow transition hover:border-blue-300/35 hover:bg-blue-400/18">
+                Ler visão geral
+              </a>
+              <a href="https://github.com/amadeuberaldin/ai-agent-infrastructure" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+                Ver repositório
+              </a>
+            </div>
+          </div>
+
+          <aside class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-panel backdrop-blur-sm">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">Resumo</p>
+            <ul class="mt-5 space-y-4 text-sm leading-6 text-slate-300">
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-blue-300"></span>
+                <span>Pipeline multiestágio para geração e revisão de mudanças em websites.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-cyan-300"></span>
+                <span>Separação intencional entre infraestrutura privada e documentação pública sanitizada.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-purple-300"></span>
+                <span>Uso do Git como fronteira de revisão entre saída de agentes e versão estável do projeto.</span>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="visao-geral" class="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
+        <div class="mb-8 max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Visão geral</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Um sistema de geração assistida tratado como fluxo de engenharia, não como prompt único.
+          </h2>
+          <p class="mt-4 max-w-measure text-base leading-7 text-slate-300">
+            Este projeto documenta uma arquitetura em que diferentes agentes participam de etapas distintas de pesquisa, contexto, planejamento visual, desenvolvimento, refinamento, validação e preview. A versão pública descreve o desenho do sistema sem expor segredos, credenciais ou detalhes sensíveis da infraestrutura real.
+          </p>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-8">
+        <div class="grid gap-6 lg:grid-cols-3">
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-blue-400/20 bg-blue-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-100">
+              Objetivo
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Explorar orquestração modular de agentes para produzir mudanças em websites de forma mais consistente, revisável e segura do que uma geração única e direta.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">
+              Abordagem
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Separar contexto, planejamento, geração, refinamento e QA em etapas distintas, com preview publicável e branch isolada por tarefa antes de qualquer merge.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-purple-400/20 bg-purple-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-purple-100">
+              Estado
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Projeto além da fase puramente conceitual, com fluxo já exercitado na prática e documentado em forma pública sanitizada.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-14">
+        <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+          <article class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-panel">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Fluxo documentado</p>
+
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">1. Research</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Coleta de informações iniciais e entendimento do objetivo da mudança.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">2. Context Builder</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Injeção de identidade persistente do site, regras editoriais e limites de conteúdo antes da geração.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">3. Design Planner</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Definição de direção visual, seções, hierarquia e notas de interface antes do código.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">4. Development</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Geração das alterações estruturais e implementação inicial da página ou ajuste solicitado.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">5. UI Refinement</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Polimento da interface com foco em espaçamento, tipografia, cards, botões e acabamento visual.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">6. QA + Preview + Git</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Validação, deploy de preview, criação de branch isolada e revisão humana antes do merge.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <aside class="rounded-[2rem] border border-white/10 bg-panelSoft/80 p-8 shadow-soft">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Tipo de projeto</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Sanitizado</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Self-hosted</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Experimental</span>
+            </div>
+
+            <p class="mt-6 text-sm leading-7 text-slate-300">
+              A camada pública deste projeto foi desenhada para mostrar arquitetura, fluxo e decisões de engenharia sem expor implementação privada, credenciais ou detalhes operacionais sensíveis.
+            </p>
+
+            <div class="mt-6 rounded-2xl border border-blue-400/15 bg-blue-400/10 p-5 text-sm leading-6 text-blue-50">
+              O ponto central aqui não é apenas gerar código, mas tornar a saída dos agentes auditável, revisável e tratável como mudança de engenharia.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-10">
+        <div class="rounded-[2rem] border border-white/10 bg-panel/70 p-8 shadow-soft">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Decisões importantes de arquitetura</p>
+
+          <div class="mt-6 grid gap-5 md:grid-cols-2">
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Identidade persistente do site</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                A introdução de um documento estável de identidade melhorou a consistência entre gerações e reduziu desvios editoriais.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Homepage como manifesto</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                A homepage deixou de ser apenas uma lista de projetos e passou a funcionar como entrada editorial e filosófica para o restante do site.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Git como fronteira de revisão</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Cada mudança gerada pode ser isolada em sua própria branch, facilitando inspeção, comparação e aprovação humana antes de estabilizar a alteração.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Separação público / privado</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                A documentação pública existe para explicar o sistema com segurança, sem misturar repositórios, runtime real e segredos operacionais.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 pb-16 pt-6 lg:px-8 lg:pb-20">
+        <div class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-panel">
+          <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Repositório</p>
+              <h2 class="mt-3 text-2xl font-semibold text-white">Explorar a documentação pública do projeto</h2>
+              <p class="mt-4 max-w-measure text-sm leading-7 text-slate-300">
+                O repositório reúne visão arquitetural, fluxo de trabalho, decisões de design do sistema e exemplos seguros do pipeline documentado.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 lg:justify-end">
+              <a href="https://github.com/amadeuberaldin/ai-agent-infrastructure" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-blue-400/25 bg-blue-400/12 px-5 py-3 text-sm font-medium text-blue-50 shadow-glow transition hover:border-blue-300/35 hover:bg-blue-400/18">
+                Abrir repositório no GitHub
+              </a>
+              <a href="/projetos.html" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+                Voltar para projetos
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mx-auto max-w-7xl px-6 pb-10 pt-8 lg:px-8">
+      <div class="flex flex-col gap-4 border-t border-white/8 pt-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+        <p>Amadeu Beraldin — agentes, automação assistida e arquitetura de revisão.</p>
+        <p>© <span id="year"></span></p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>

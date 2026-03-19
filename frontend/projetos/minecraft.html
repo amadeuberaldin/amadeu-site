@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MenteColetiva — Amadeu Beraldin</title>
+  <meta name="description" content="Mod server-side para Minecraft Fabric que faz mobs hostis compartilharem aggro e reagirem em grupo, tornando o combate mais perigoso e dinâmico." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0B0F19',
+            panel: '#111827',
+            panelSoft: '#0f172a',
+            line: 'rgba(148, 163, 184, 0.18)',
+            muted: '#94a3b8',
+            text: '#e5eefb',
+            blue: '#60A5FA',
+            green: '#22C55E',
+            purple: '#A78BFA',
+            cyan: '#22d3ee',
+            amber: '#F59E0B'
+          },
+          boxShadow: {
+            soft: '0 14px 40px rgba(0,0,0,0.28)',
+            glow: '0 0 0 1px rgba(245,158,11,0.18), 0 18px 40px rgba(0,0,0,0.30)',
+            panel: '0 20px 60px rgba(2,6,23,0.45)'
+          },
+          fontSize: {
+            hero: ['clamp(2.6rem, 6vw, 4.8rem)', { lineHeight: '0.95', letterSpacing: '-0.045em' }]
+          },
+          maxWidth: {
+            measure: '72ch'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="bg-bg text-text antialiased selection:bg-amber/20 selection:text-white">
+  <div class="page-shell min-h-screen">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/35 to-transparent"></div>
+      <div class="absolute left-1/2 top-12 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-amber-400/10 blur-3xl"></div>
+      <div class="absolute right-[8%] top-[18%] h-80 w-80 rounded-full bg-green-500/10 blur-3xl"></div>
+      <div class="absolute left-[6%] bottom-[10%] h-72 w-72 rounded-full bg-blue-500/10 blur-3xl"></div>
+      <div class="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]"></div>
+    </div>
+
+    <header class="sticky top-0 z-50 border-b border-white/8 bg-bg/85 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/80">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <a href="/" class="text-sm font-semibold tracking-[0.24em] text-white/90 uppercase transition hover:text-white">
+          Amadeu Beraldin
+        </a>
+
+        <nav class="flex items-center gap-2 text-sm text-slate-300">
+          <a href="/" class="rounded-full px-4 py-2.5 transition duration-200 hover:bg-white/5 hover:text-white">Início</a>
+          <a href="/projetos.html" class="rounded-full px-4 py-2.5 transition duration-200 hover:bg-white/5 hover:text-white">Projetos</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="mx-auto max-w-7xl px-6 pb-14 pt-14 lg:px-8 lg:pb-20 lg:pt-20">
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-end">
+          <div>
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-amber-100">
+              mod server-side · minecraft fabric
+            </div>
+
+            <h1 class="max-w-4xl text-hero font-semibold text-white">
+              MenteColetiva
+            </h1>
+
+            <p class="mt-6 max-w-measure text-lg leading-8 text-slate-300">
+              Mod server-side para Minecraft Fabric que faz mobs hostis compartilharem aggro e reagirem em grupo, transformando encontros comuns em combates mais perigosos, coordenados e dinâmicos.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#visao-geral" class="inline-flex items-center justify-center rounded-full border border-amber-400/25 bg-amber-400/12 px-5 py-3 text-sm font-medium text-amber-50 shadow-glow transition hover:border-amber-300/35 hover:bg-amber-400/18">
+                Ler visão geral
+              </a>
+              <a href="https://github.com/amadeuberaldin/mentecoletiva/releases" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+                Ver releases
+              </a>
+            </div>
+          </div>
+
+          <aside class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-panel backdrop-blur-sm">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-amber-200">Resumo</p>
+            <ul class="mt-5 space-y-4 text-sm leading-6 text-slate-300">
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-amber-300"></span>
+                <span>Mod para Fabric focado em comportamento coletivo de mobs hostis.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-green-300"></span>
+                <span>Funciona no servidor, sem exigir instalação do lado do cliente.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-blue-300"></span>
+                <span>Projeto testado e utilizado no meu próprio servidor de Minecraft hospedado.</span>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="visao-geral" class="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
+        <div class="mb-8 max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-amber-200">Visão geral</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Um ajuste pequeno na lógica dos mobs, mas com impacto real no combate.
+          </h2>
+          <p class="mt-4 max-w-measure text-base leading-7 text-slate-300">
+            O MenteColetiva altera a forma como mobs hostis reagem ao jogador. Em vez de agirem de forma isolada, eles passam a compartilhar agressividade com mobs próximos quando um deles detecta ou é atacado por um player. O resultado é um comportamento mais coordenado e uma experiência de combate significativamente mais tensa.
+          </p>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-8">
+        <div class="grid gap-6 lg:grid-cols-3">
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-amber-400/20 bg-amber-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-amber-100">
+              Objetivo
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Tornar o comportamento dos mobs hostis mais interessante e ameaçador, criando encontros menos previsíveis e mais próximos da sensação de enfrentar um grupo real.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-green-400/20 bg-green-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-green-100">
+              Abordagem
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Implementar a lógica de compartilhamento de aggro no lado do servidor, mantendo o mod simples de usar, compatível com Fabric e funcional sem dependências no cliente.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-blue-400/20 bg-blue-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-100">
+              Estado
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Projeto funcional, compatível com Minecraft 1.21.11, já testado em ambiente real e utilizado no servidor que eu hospedo.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-14">
+        <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+          <article class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-panel">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-amber-200">O que o mod faz</p>
+
+            <div class="mt-6 grid gap-5 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Shared aggro</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Quando um mob hostil detecta ou é atacado por um jogador, mobs próximos podem entrar no combate em conjunto.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Funciona até em hitkill</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Mesmo quando o primeiro mob morre imediatamente, a informação de agressão ainda pode ser propagada para outros ao redor.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Server-side only</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Toda a lógica roda no servidor, sem necessidade de o jogador instalar o mod no cliente para que o comportamento aconteça.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Ajuste adicional em esqueletos</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Enquanto o efeito está ativo, o mod também melhora a precisão dos esqueletos, aumentando a pressão do combate.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <aside class="rounded-[2rem] border border-white/10 bg-panelSoft/80 p-8 shadow-soft">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-amber-200">Tipo de projeto</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Open source</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Modding</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Server-side</span>
+            </div>
+
+            <p class="mt-6 text-sm leading-7 text-slate-300">
+              O foco deste projeto não é só alterar dificuldade, mas mudar a lógica do encontro: mobs deixam de ser ameaças isoladas e passam a funcionar como presença coletiva.
+            </p>
+
+            <div class="mt-6 rounded-2xl border border-amber-400/15 bg-amber-400/10 p-5 text-sm leading-6 text-amber-50">
+              Em vez de apenas aumentar números, o mod muda comportamento. Isso torna o combate mais emergente, menos previsível e mais interessante de testar em servidor real.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-10">
+        <div class="rounded-[2rem] border border-white/10 bg-panel/70 p-8 shadow-soft">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-amber-200">Decisões de design e balanceamento</p>
+
+          <div class="mt-6 grid gap-5 md:grid-cols-2">
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Exclusões intencionais</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Enderman, Zombified Piglin, Warden e Wither foram excluídos da mecânica para evitar interações exageradas ou injustas.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Compatibilidade simples</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                O mod foi desenhado para rodar em Minecraft 1.21.11 com Fabric Loader e Fabric API, mantendo a instalação objetiva.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Uso prático em servidor</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                O projeto não ficou apenas no ambiente de desenvolvimento: ele foi testado em gameplay real e está sendo usado no meu próprio servidor.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Mudança de comportamento, não só de estatística</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Em vez de apenas buffar mobs com dano ou vida, o mod altera a lógica de reação, o que gera partidas mais dinâmicas e imprevisíveis.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 pb-16 pt-6 lg:px-8 lg:pb-20">
+        <div class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-panel">
+          <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.22em] text-amber-200">Repositório e download</p>
+              <h2 class="mt-3 text-2xl font-semibold text-white">Explorar o projeto no GitHub</h2>
+              <p class="mt-4 max-w-measure text-sm leading-7 text-slate-300">
+                O repositório reúne a documentação do mod, informações de compatibilidade e acesso às releases públicas.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 lg:justify-end">
+              <a href="https://github.com/amadeuberaldin/mentecoletiva" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-amber-400/25 bg-amber-400/12 px-5 py-3 text-sm font-medium text-amber-50 shadow-glow transition hover:border-amber-300/35 hover:bg-amber-400/18">
+                Abrir repositório
+              </a>
+              <a href="https://github.com/amadeuberaldin/mentecoletiva/releases" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+                Ver releases
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mx-auto max-w-7xl px-6 pb-10 pt-8 lg:px-8">
+      <div class="flex flex-col gap-4 border-t border-white/8 pt-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+        <p>Amadeu Beraldin — modding, lógica de gameplay e experimentação em ambiente real.</p>
+        <p>© <span id="year"></span></p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>

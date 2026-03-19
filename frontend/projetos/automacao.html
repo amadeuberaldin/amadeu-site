@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Server Automation — Amadeu Beraldin</title>
+  <meta name="description" content="Documentação de scripts, rotinas e práticas de automação usadas em servidores de homelab para tornar configuração, manutenção e operação mais reproduzíveis." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0B0F19',
+            panel: '#111827',
+            panelSoft: '#0f172a',
+            line: 'rgba(148, 163, 184, 0.18)',
+            muted: '#94a3b8',
+            text: '#e5eefb',
+            blue: '#60A5FA',
+            green: '#22C55E',
+            purple: '#A78BFA',
+            cyan: '#22d3ee',
+            amber: '#F59E0B'
+          },
+          boxShadow: {
+            soft: '0 14px 40px rgba(0,0,0,0.28)',
+            glow: '0 0 0 1px rgba(167,139,250,0.18), 0 18px 40px rgba(0,0,0,0.30)',
+            panel: '0 20px 60px rgba(2,6,23,0.45)'
+          },
+          fontSize: {
+            hero: ['clamp(2.6rem, 6vw, 4.8rem)', { lineHeight: '0.95', letterSpacing: '-0.045em' }]
+          },
+          maxWidth: {
+            measure: '72ch'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="bg-bg text-text antialiased selection:bg-purple/20 selection:text-white">
+  <div class="page-shell min-h-screen">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-300/35 to-transparent"></div>
+      <div class="absolute left-1/2 top-12 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-purple-400/10 blur-3xl"></div>
+      <div class="absolute right-[8%] top-[18%] h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl"></div>
+      <div class="absolute left-[6%] bottom-[10%] h-72 w-72 rounded-full bg-green-500/10 blur-3xl"></div>
+      <div class="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]"></div>
+    </div>
+
+    <header class="sticky top-0 z-50 border-b border-white/8 bg-bg/85 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/80">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <a href="/" class="text-sm font-semibold tracking-[0.24em] text-white/90 uppercase transition hover:text-white">
+          Amadeu Beraldin
+        </a>
+
+        <nav class="flex items-center gap-2 text-sm text-slate-300">
+          <a href="/" class="rounded-full px-4 py-2.5 transition duration-200 hover:bg-white/5 hover:text-white">Início</a>
+          <a href="/projetos.html" class="rounded-full px-4 py-2.5 transition duration-200 hover:bg-white/5 hover:text-white">Projetos</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="mx-auto max-w-7xl px-6 pb-14 pt-14 lg:px-8 lg:pb-20 lg:pt-20">
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-end">
+          <div>
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-purple-400/20 bg-purple-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-purple-100">
+              automação · operação de servidores
+            </div>
+
+            <h1 class="max-w-4xl text-hero font-semibold text-white">
+              Server Automation
+            </h1>
+
+            <p class="mt-6 max-w-measure text-lg leading-8 text-slate-300">
+              Projeto de documentação e organização de scripts, rotinas e práticas de automação usados no meu homelab para tornar configuração, manutenção e operação de servidores mais previsíveis, reproduzíveis e menos manuais.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#visao-geral" class="inline-flex items-center justify-center rounded-full border border-purple-400/25 bg-purple-400/12 px-5 py-3 text-sm font-medium text-purple-50 shadow-glow transition hover:border-purple-300/35 hover:bg-purple-400/18">
+                Ler visão geral
+              </a>
+              <a href="https://github.com/amadeuberaldin/server-automation" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+                Ver repositório
+              </a>
+            </div>
+          </div>
+
+          <aside class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-panel backdrop-blur-sm">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-purple-200">Resumo</p>
+            <ul class="mt-5 space-y-4 text-sm leading-6 text-slate-300">
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-purple-300"></span>
+                <span>Documentação de setup, manutenção, automação e práticas operacionais em servidores de homelab.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-cyan-300"></span>
+                <span>Foco em repetibilidade, organização e redução de configuração manual.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-green-300"></span>
+                <span>Projeto conectado a WireGuard, Docker, aplicações self-hosted e infraestrutura Ubuntu.</span>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="visao-geral" class="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
+        <div class="mb-8 max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-purple-200">Visão geral</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Automatizar não só para poupar tempo, mas para reduzir atrito e organizar operação.
+          </h2>
+          <p class="mt-4 max-w-measure text-base leading-7 text-slate-300">
+            Este projeto reúne scripts, rotinas e práticas usadas para administrar servidores do homelab com mais consistência. Em vez de depender apenas de memória ou execução manual repetitiva, a automação aqui é tratada como ferramenta para tornar ambientes mais reproduzíveis, facilitar manutenção e documentar como a infraestrutura é operada na prática.
+          </p>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-8">
+        <div class="grid gap-6 lg:grid-cols-3">
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-purple-400/20 bg-purple-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-purple-100">
+              Objetivo
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Organizar a forma como servidores são configurados, mantidos e ajustados, reduzindo etapas manuais e aumentando a clareza do processo operacional.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">
+              Abordagem
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Documentar procedimentos, concentrar scripts úteis, registrar práticas de serviço e tratar automação como parte da arquitetura operacional do ambiente.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-green-400/20 bg-green-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-green-100">
+              Estado
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Repositório em evolução contínua, usado como base de documentação e organização para práticas reais de automação em servidores do homelab.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-14">
+        <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+          <article class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-panel">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-purple-200">O que o projeto documenta</p>
+
+            <div class="mt-6 grid gap-5 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Procedimentos de setup</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Registro de como servidores e serviços são preparados, ajudando a reconstruir o ambiente com menos improviso.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Scripts de automação</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Scripts usados para reduzir tarefas repetitivas, padronizar operação e apoiar manutenção cotidiana do ambiente.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Práticas de gerenciamento</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Notas sobre administração de serviços, rotinas de manutenção e organização operacional dos servidores.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Configuração de infraestrutura</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  Práticas relacionadas a Ubuntu, Docker, WireGuard e aplicações self-hosted usadas no laboratório.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <aside class="rounded-[2rem] border border-white/10 bg-panelSoft/80 p-8 shadow-soft">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-purple-200">Tipo de projeto</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Infraestrutura</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Automação</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Homelab</span>
+            </div>
+
+            <p class="mt-6 text-sm leading-7 text-slate-300">
+              Este projeto reforça uma ideia importante do laboratório: infraestrutura pequena também se beneficia de disciplina operacional, documentação e automação bem pensada.
+            </p>
+
+            <div class="mt-6 rounded-2xl border border-purple-400/15 bg-purple-400/10 p-5 text-sm leading-6 text-purple-50">
+              Automatizar aqui não significa esconder a operação, mas torná-la mais legível, repetível e fácil de manter ao longo do tempo.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-10">
+        <div class="rounded-[2rem] border border-white/10 bg-panel/70 p-8 shadow-soft">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-purple-200">Aprendizados e valor prático</p>
+
+          <div class="mt-6 grid gap-5 md:grid-cols-2">
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Repetibilidade reduz erro</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Quanto mais um procedimento pode ser repetido de forma clara, menor a dependência de memória e menor a chance de inconsistência.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Automação ajuda a documentar</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Um script bem organizado não apenas executa uma tarefa: ele também registra a lógica operacional por trás do processo.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Infraestrutura viva exige manutenção viva</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Ambientes reais mudam com o tempo, então a automação precisa acompanhar ajustes de serviço, rede e prioridades do laboratório.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Projeto ponte entre outros repositórios</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Este repositório complementa e conecta outros projetos de homelab, VPN e agentes, servindo como camada operacional transversal.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 pb-16 pt-6 lg:px-8 lg:pb-20">
+        <div class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-panel">
+          <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.22em] text-purple-200">Repositório</p>
+              <h2 class="mt-3 text-2xl font-semibold text-white">Explorar a base pública de automação</h2>
+              <p class="mt-4 max-w-measure text-sm leading-7 text-slate-300">
+                O repositório reúne scripts, documentação operacional, práticas de configuração e referências relacionadas à automação do meu ambiente self-hosted.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 lg:justify-end">
+              <a href="https://github.com/amadeuberaldin/server-automation" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-purple-400/25 bg-purple-400/12 px-5 py-3 text-sm font-medium text-purple-50 shadow-glow transition hover:border-purple-300/35 hover:bg-purple-400/18">
+                Abrir repositório
+              </a>
+              <a href="/projetos.html" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+                Voltar para projetos
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mx-auto max-w-7xl px-6 pb-10 pt-8 lg:px-8">
+      <div class="flex flex-col gap-4 border-t border-white/8 pt-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+        <p>Amadeu Beraldin — automação, operação de servidores e infraestrutura reproduzível.</p>
+        <p>© <span id="year"></span></p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>

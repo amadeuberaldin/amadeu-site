@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WireGuard VPN Infrastructure — Amadeu Beraldin</title>
+  <meta name="description" content="Projeto de infraestrutura WireGuard com VPS como gateway para contornar CGNAT, isolar SSH na VPN e reduzir exposição pública com documentação sanitizada." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0B0F19',
+            panel: '#111827',
+            panelSoft: '#0f172a',
+            line: 'rgba(148, 163, 184, 0.18)',
+            muted: '#94a3b8',
+            text: '#e5eefb',
+            blue: '#60A5FA',
+            green: '#22C55E',
+            purple: '#A78BFA',
+            cyan: '#22d3ee',
+            amber: '#F59E0B'
+          },
+          boxShadow: {
+            soft: '0 14px 40px rgba(0,0,0,0.28)',
+            glow: '0 0 0 1px rgba(96,165,250,0.18), 0 18px 40px rgba(0,0,0,0.30)',
+            panel: '0 20px 60px rgba(2,6,23,0.45)'
+          },
+          fontSize: {
+            hero: ['clamp(2.6rem, 6vw, 4.8rem)', { lineHeight: '0.95', letterSpacing: '-0.045em' }]
+          },
+          maxWidth: {
+            measure: '72ch'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="bg-bg text-text antialiased selection:bg-blue/20 selection:text-white">
+  <div class="page-shell min-h-screen">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-300/35 to-transparent"></div>
+      <div class="absolute left-1/2 top-12 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-blue-400/10 blur-3xl"></div>
+      <div class="absolute right-[8%] top-[18%] h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl"></div>
+      <div class="absolute left-[6%] bottom-[10%] h-72 w-72 rounded-full bg-green-500/10 blur-3xl"></div>
+      <div class="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]"></div>
+    </div>
+
+    <header class="sticky top-0 z-50 border-b border-white/8 bg-bg/85 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/80">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <a href="/" class="text-sm font-semibold tracking-[0.24em] text-white/90 uppercase transition hover:text-white">
+          Amadeu Beraldin
+        </a>
+
+        <nav class="flex items-center gap-2 text-sm text-slate-300">
+          <a href="/" class="rounded-full px-4 py-2.5 transition duration-200 hover:bg-white/5 hover:text-white">Início</a>
+          <a href="/projetos.html" class="rounded-full px-4 py-2.5 transition duration-200 hover:bg-white/5 hover:text-white">Projetos</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="mx-auto max-w-7xl px-6 pb-14 pt-14 lg:px-8 lg:pb-20 lg:pt-20">
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_22rem] lg:items-end">
+          <div>
+            <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-100">
+              conectividade · segurança de acesso
+            </div>
+
+            <h1 class="max-w-4xl text-hero font-semibold text-white">
+              WireGuard VPN Infrastructure
+            </h1>
+
+            <p class="mt-6 max-w-measure text-lg leading-8 text-slate-300">
+              Projeto de infraestrutura que usa uma VPS como gateway WireGuard para contornar CGNAT, isolar o acesso SSH dentro da VPN e reduzir a exposição pública do ambiente doméstico com documentação reproduzível e sanitizada.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#visao-geral" class="inline-flex items-center justify-center rounded-full border border-blue-400/25 bg-blue-400/12 px-5 py-3 text-sm font-medium text-blue-50 shadow-glow transition hover:border-blue-300/35 hover:bg-blue-400/18">
+                Ler visão geral
+              </a>
+              <a href="https://github.com/amadeuberaldin/wireguard-vpn-infrastructure" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+                Ver repositório
+              </a>
+            </div>
+          </div>
+
+          <aside class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-panel backdrop-blur-sm">
+            <p class="text-xs font-semibold uppercase tracking-[0.22em] text-blue-200">Resumo</p>
+            <ul class="mt-5 space-y-4 text-sm leading-6 text-slate-300">
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-blue-300"></span>
+                <span>Arquitetura para acesso remoto seguro a um servidor doméstico atrás de CGNAT.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-cyan-300"></span>
+                <span>VPS usada como ponto público mínimo, com WireGuard como camada principal de conectividade.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-2 h-2 w-2 rounded-full bg-green-300"></span>
+                <span>SSH isolado dentro da VPN e documentação pública sem exposição de segredos ou IPs reais.</span>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="visao-geral" class="mx-auto max-w-7xl px-6 py-8 lg:px-8 lg:py-10">
+        <div class="mb-8 max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Visão geral</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            Resolver CGNAT com uma arquitetura pequena, mas tratada com rigor operacional.
+          </h2>
+          <p class="mt-4 max-w-measure text-base leading-7 text-slate-300">
+            Este projeto documenta uma topologia em que uma VPS com IP público atua como gateway WireGuard para um servidor doméstico inacessível diretamente por causa do CGNAT do provedor. Em vez de expor serviços desnecessariamente, a arquitetura concentra a entrada pública no mínimo necessário e mantém o acesso administrativo sensível restrito à rede privada da VPN.
+          </p>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-8">
+        <div class="grid gap-6 lg:grid-cols-3">
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-blue-400/20 bg-blue-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-blue-100">
+              Objetivo
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Criar acesso remoto confiável a um servidor residencial atrás de CGNAT, sem depender de exposição direta da máquina doméstica à internet pública.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-100">
+              Abordagem
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Usar uma VPS como hub WireGuard, com firewall endurecido, SSH isolado na VPN e documentação sanitizada para tornar a solução auditável e reproduzível.
+            </p>
+          </article>
+
+          <article class="rounded-3xl border border-white/10 bg-white/5 p-7 shadow-soft backdrop-blur-sm">
+            <div class="mb-5 inline-flex rounded-2xl border border-green-400/20 bg-green-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-green-100">
+              Estado
+            </div>
+            <p class="text-sm leading-7 text-slate-300">
+              Projeto documentado como infraestrutura real de homelab, com templates sanitizados, scripts auxiliares e foco explícito em segurança operacional.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-14">
+        <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+          <article class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-panel">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">O que a arquitetura inclui</p>
+
+            <div class="mt-6 grid gap-5 sm:grid-cols-2">
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Bypass de CGNAT</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  A VPS com IP público funciona como ponto de entrada, tornando possível alcançar um ambiente doméstico que não possui exposição direta.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">SSH apenas pela VPN</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  O acesso administrativo mais sensível deixa de ficar aberto publicamente e passa a existir apenas dentro da rede WireGuard.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Firewall endurecido</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  A configuração combina regras claras de firewall com foco em reduzir superfície exposta e manter comportamento previsível.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-white/90">Documentação reproduzível</h3>
+                <p class="mt-3 text-sm leading-6 text-slate-300">
+                  O repositório organiza arquitetura, passo a passo, templates sem segredos e exemplos mascarados para consulta pública segura.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <aside class="rounded-[2rem] border border-white/10 bg-panelSoft/80 p-8 shadow-soft">
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Tipo de projeto</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Infraestrutura</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Open source</span>
+              <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200">Segurança prática</span>
+            </div>
+
+            <p class="mt-6 text-sm leading-7 text-slate-300">
+              O valor deste projeto não está apenas em “fazer a VPN funcionar”, mas em desenhar uma solução pequena com escolhas claras de exposição mínima, isolamento administrativo e documentação segura.
+            </p>
+
+            <div class="mt-6 rounded-2xl border border-blue-400/15 bg-blue-400/10 p-5 text-sm leading-6 text-blue-50">
+              A arquitetura demonstra uma ideia central importante: conectividade remota não precisa significar abertura ampla da infraestrutura. É possível construir acesso com mais controle, menos exposição e melhor entendimento do fluxo de rede.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-10">
+        <div class="rounded-[2rem] border border-white/10 bg-panel/70 p-8 shadow-soft">
+          <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Tecnologias e decisões relevantes</p>
+
+          <div class="mt-6 grid gap-5 md:grid-cols-2">
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">WireGuard como base da topologia</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                WireGuard foi escolhido pela simplicidade de configuração, clareza operacional e bom encaixe em uma arquitetura pequena e compreensível.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">VPS como gateway público mínimo</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Em vez de expor diretamente o servidor doméstico, a VPS concentra o papel público e reduz a superfície de ataque do ambiente local.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Sanitização como parte do projeto</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                O repositório foi pensado para documentação pública consciente, com checklist de sanitização, ADRs e remoção de dados sensíveis.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-white/8 bg-black/10 p-5">
+              <h3 class="text-base font-semibold text-white">Hooks e scripts de apoio</h3>
+              <p class="mt-3 text-sm leading-6 text-slate-300">
+                Scripts auxiliares, exemplos mascarados e hook local de segurança ajudam a reduzir erro humano durante a manutenção da base pública.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-6 pb-16 pt-6 lg:px-8 lg:pb-20">
+        <div class="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-panel">
+          <div class="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.22em] text-blue-200">Repositório</p>
+              <h2 class="mt-3 text-2xl font-semibold text-white">Explorar a documentação pública do projeto</h2>
+              <p class="mt-4 max-w-measure text-sm leading-7 text-slate-300">
+                O repositório reúne arquitetura, documentação passo a passo, templates sanitizados, scripts auxiliares e decisões de segurança relacionadas a essa infraestrutura.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-3 lg:justify-end">
+              <a href="https://github.com/amadeuberaldin/wireguard-vpn-infrastructure" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-full border border-blue-400/25 bg-blue-400/12 px-5 py-3 text-sm font-medium text-blue-50 shadow-glow transition hover:border-blue-300/35 hover:bg-blue-400/18">
+                Abrir repositório
+              </a>
+              <a href="/projetos.html" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
+                Voltar para projetos
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mx-auto max-w-7xl px-6 pb-10 pt-8 lg:px-8">
+      <div class="flex flex-col gap-4 border-t border-white/8 pt-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+        <p>Amadeu Beraldin — conectividade segura, VPN e infraestrutura prática documentada.</p>
+        <p>© <span id="year"></span></p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/script.js"></script>
+</body>
+</html>
